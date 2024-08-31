@@ -1,0 +1,13 @@
+﻿<h1>@_currentNumber</h1>
+
+<button @onclick="GenerateRandomNumber">Generate</button>
+
+@code {
+    private static Random _random = new Random();
+    private static int _currentNumber;
+
+    private static void GenerateRandomNumber()
+    {
+        _currentNumber = _random.Next(1, 91);
+    }
+}

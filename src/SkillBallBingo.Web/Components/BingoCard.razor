@@ -1,0 +1,19 @@
+﻿@inherits BingoCardBase
+
+<div class="container">
+    <table class="table table-bordered bingo-card">
+        <tbody>
+            @{
+                foreach (var row in Card)
+                {
+                    <tr>
+                        @foreach (var number in row)
+                        {
+                            <td>@(number.HasValue ? number.Value.ToString() : "")</td>
+                        }
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
