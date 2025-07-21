@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Microsoft.JSInterop
 @using SkillBallBingo.Application.Models
 @rendermode InteractiveServer
 @inject IJSRuntime JS
@@ -45,8 +46,11 @@
     <button class="btn btn-primary" @onclick="StartGame">New Game</button>
 }
 
+@implements IAsyncDisposable
+
 @code {
     private Game? _game;
+    private DotNetObjectReference<Bingo>? _objectRef;
 
     private void StartGame()
     {
@@ -57,8 +61,17 @@
     {
         if (firstRender)
         {
-            await JS.InvokeVoidAsync("keyboardInterop.initialize",
-                DotNetObjectReference.Create(this));
+            _objectRef = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("keyboardInterop.initialize", _objectRef);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_objectRef is not null)
+        {
+            await JS.InvokeVoidAsync("keyboardInterop.dispose");
+            _objectRef.Dispose();
         }
     }
 

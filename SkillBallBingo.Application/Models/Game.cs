@@ -1,4 +1,3 @@
-﻿using SkillBallBingo.Console;
 
 namespace SkillBallBingo.Application.Models;
 
@@ -114,6 +113,11 @@ public class Game
     
     private int GetRandomNumber()
     {
+        if (AvailableNumbers.Count == 0)
+        {
+            throw new InvalidOperationException("No numbers left to draw.");
+        }
+
         var randomIndex = Random.Next(0, AvailableNumbers.Count);
         var selectedNumber = AvailableNumbers[randomIndex];
         AvailableNumbers.Remove(selectedNumber);
@@ -124,7 +128,7 @@ public class Game
     private bool NumberExistsInTicket(int number)
     {
         return Ticket.SelectMany(row => row)
-            .Where(cell => cell != null)
-            .Any(cell => cell.Number == number);
+            .Where(cell => cell is not null)
+            .Any(cell => cell!.Number == number);
     }
 }

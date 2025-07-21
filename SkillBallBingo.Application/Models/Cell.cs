@@ -1,4 +1,4 @@
-﻿namespace SkillBallBingo.Console;
+﻿namespace SkillBallBingo.Application.Models;
 
 public class Cell
 {
