@@ -1,0 +1,86 @@
+﻿@page "/"
+@using SkillBallBingo.Application.Models
+@rendermode InteractiveServer
+@inject IJSRuntime JS
+
+<PageTitle>Skill Ball Bingo</PageTitle>
+
+@if (_game is not null)
+{
+    <table class="table table-bordered w-50">
+        @foreach (var row in _game.Ticket)
+        {
+            <tr>
+                @foreach (var cell in row)
+                {
+                    if (cell is { IsMarked: true })
+                    {
+                        <td class="bg-success-subtle">
+                            @cell.Number
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @cell?.Number
+                        </td>
+                    }
+                }
+            </tr>
+        }
+    </table>
+    
+    <br/>
+    @_game.CurrentNumber
+    <br/>
+    
+    <div class="btn-group" role="group">
+        <button type="button" class="btn btn-success" @onclick="_game.AcceptCurrentNumber">Accept</button>
+        <button type="button" class="btn btn-danger" @onclick="_game.RejectCurrentNumber">Reject</button>
+    </div>
+}
+
+@if (_game is null)
+{
+    <button class="btn btn-primary" @onclick="StartGame">New Game</button>
+}
+
+@code {
+    private Game? _game;
+
+    private void StartGame()
+    {
+        _game = new Game();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("keyboardInterop.initialize",
+                DotNetObjectReference.Create(this));
+        }
+    }
+
+    [JSInvokable]
+    public Task OnKeyDown(string key)
+    {
+        if (_game is null)
+        {
+            return Task.CompletedTask;
+        }
+        
+        switch (key)
+        {
+            case "a":
+                _game.AcceptCurrentNumber();
+                break;
+            case "r":
+                _game.RejectCurrentNumber();
+                break;
+        }
+        
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+}
