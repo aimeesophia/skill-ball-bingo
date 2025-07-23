@@ -12,7 +12,7 @@
 
     public void Start()
     {
-        Stop(); // Clean up any existing timer
+        Stop();
 
         _remainingSeconds = Seconds;
 
@@ -28,16 +28,16 @@
                 Stop();
                 InvokeAsync(() => OnCountdownFinished.InvokeAsync());
             }
-        }, null, 0, 1000); // Run every second
+        }, null, 0, 1000);
     }
 
-    public void Stop()
+    private void Stop()
     {
         _timer?.Dispose();
         _timer = null;
     }
 
-    public string DisplayTime => TimeSpan.FromSeconds(_remainingSeconds).ToString(@"mm\:ss");
+    private string DisplayTime => TimeSpan.FromSeconds(_remainingSeconds).ToString(@"mm\:ss");
 }
 
 <div>
