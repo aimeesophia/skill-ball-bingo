@@ -29,15 +29,18 @@
             </tr>
         }
     </table>
-    
+
     <br/>
     @_game.CurrentNumber
     <br/>
-    
+
     <div class="btn-group" role="group">
         <button type="button" class="btn btn-success" @onclick="_game.AcceptCurrentNumber">Accept</button>
         <button type="button" class="btn btn-danger" @onclick="_game.RejectCurrentNumber">Reject</button>
     </div>
+
+    <CountdownTimer @ref="_timer" Seconds="60" OnCountdownFinished="HandleFinished"/>
+    <p>@_message</p>
 }
 
 @if (_game is null)
@@ -47,14 +50,30 @@
 
 @code {
     private Game? _game;
+    private CountdownTimer? _timer;
+    private string _message = "";
+    private bool _startTimer;
 
     private void StartGame()
     {
         _game = new Game();
+        _startTimer = true;
+        StateHasChanged();
+    }
+
+    private void HandleFinished()
+    {
+        _message = "Countdown complete!";
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (_startTimer && _timer != null)
+        {
+            _timer.Start();
+            _startTimer = false;
+        }
+
         if (firstRender)
         {
             await JS.InvokeVoidAsync("keyboardInterop.initialize",

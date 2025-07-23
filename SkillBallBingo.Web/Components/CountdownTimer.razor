@@ -1,0 +1,45 @@
+﻿@code {
+    [Parameter] public int Seconds { get; set; } = 10;
+    [Parameter] public EventCallback OnCountdownFinished { get; set; }
+
+    private int _remainingSeconds;
+    private Timer? _timer;
+
+    protected override void OnInitialized()
+    {
+        _remainingSeconds = Seconds;
+    }
+
+    public void Start()
+    {
+        Stop(); // Clean up any existing timer
+
+        _remainingSeconds = Seconds;
+
+        _timer = new Timer(_ =>
+        {
+            if (_remainingSeconds > 0)
+            {
+                _remainingSeconds--;
+                InvokeAsync(StateHasChanged);
+            }
+            else
+            {
+                Stop();
+                InvokeAsync(() => OnCountdownFinished.InvokeAsync());
+            }
+        }, null, 0, 1000); // Run every second
+    }
+
+    public void Stop()
+    {
+        _timer?.Dispose();
+        _timer = null;
+    }
+
+    public string DisplayTime => TimeSpan.FromSeconds(_remainingSeconds).ToString(@"mm\:ss");
+}
+
+<div>
+    <h3>@DisplayTime</h3>
+</div>
