@@ -145,7 +145,7 @@ public class Game
     {
         return Ticket.SelectMany(row => row)
             .Where(cell => cell != null)
-            .Any(cell => cell.Number == number);
+            .Any(cell => cell!.Number == number);
     }
 
     private void CheckForBingo()

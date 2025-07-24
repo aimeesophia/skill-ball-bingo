@@ -2,7 +2,7 @@
 @using SkillBallBingo.Application.Enums
 @using SkillBallBingo.Application.Models
 @rendermode InteractiveServer
-@inject IJSRuntime JS
+@inject IJSRuntime Js
 
 <PageTitle>Skill Ball Bingo</PageTitle>
 
@@ -134,7 +134,7 @@
 
         if (firstRender)
         {
-            await JS.InvokeVoidAsync("keyboardInterop.initialize",
+            await Js.InvokeVoidAsync("keyboardInterop.initialize",
                 DotNetObjectReference.Create(this));
         }
     }
