@@ -30,26 +30,28 @@
         }
     </table>
 
-    <br/>
-    @_game.CurrentNumber
-    <br/>
-
-    <div class="btn-group" role="group">
-        <button type="button" class="btn btn-success" @onclick="_game.AcceptCurrentNumber">Accept</button>
-        <button type="button" class="btn btn-danger" @onclick="_game.RejectCurrentNumber">Reject</button>
-    </div>
-
-    <CountdownTimer @ref="_timer" Seconds="60" OnCountdownFinished="HandleFinished"/>
-    <p>@_message</p>
+    @if (!_game.IsOver)
+    {
+        <br/>
+        @_game.CurrentNumber
+        <br/>
+        
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-success" @onclick="_game.AcceptCurrentNumber">Accept</button>
+            <button type="button" class="btn btn-danger" @onclick="_game.RejectCurrentNumber">Reject</button>
+        </div>
+        
+        <CountdownTimer @ref="_timer" Seconds="60" OnCountdownFinished="HandleFinished"/>
+        
+        @for (int i = 0; i < _game.Lives; i++)
+        {
+            <h1>O</h1>
+        }
+    }
     
     @if (_game.HasBingo)
     {
         <h1>Bingo!</h1>
-    }
-    
-    @for (int i = 0; i < _game.Lives; i++)
-    {
-        <h1>O</h1>
     }
 }
 
@@ -61,19 +63,17 @@
 @code {
     private Game? _game;
     private CountdownTimer? _timer;
-    private string _message = "";
     private bool _startTimer;
 
     private void StartGame()
     {
         _game = new Game();
         _startTimer = true;
-        StateHasChanged();
     }
 
     private void HandleFinished()
     {
-        _message = "Countdown complete!";
+        _game!.IsOver = true;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -94,11 +94,11 @@
     [JSInvokable]
     public Task OnKeyDown(string key)
     {
-        if (_game is null)
+        if (_game is null || _game.IsOver)
         {
             return Task.CompletedTask;
         }
-        
+
         switch (key)
         {
             case "a":

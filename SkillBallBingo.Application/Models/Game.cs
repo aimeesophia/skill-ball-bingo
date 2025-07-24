@@ -12,6 +12,8 @@ public class Game
     
     public int Lives { get; private set; } = 3;
     
+    public bool IsOver { get; set; }
+    
     private Random Random { get; }
 
     private List<int> AvailableNumbers { get; }
@@ -151,6 +153,7 @@ public class Game
             if (numberedCells.All(cell => cell!.IsMarked))
             {
                 HasBingo = true;
+                IsOver = true;
             }
         }
     }
@@ -158,5 +161,10 @@ public class Game
     private void LoseLife()
     {
         Lives--;
+        
+        if (Lives == 0)
+        {
+            IsOver = true;
+        }
     }
 }
