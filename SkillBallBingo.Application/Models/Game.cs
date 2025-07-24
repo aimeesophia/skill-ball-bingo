@@ -10,6 +10,8 @@ public class Game
 
     public int CurrentNumber { get; private set; }
     
+    public int Lives { get; private set; } = 3;
+    
     private Random Random { get; }
 
     private List<int> AvailableNumbers { get; }
@@ -34,12 +36,21 @@ public class Game
             
             CheckForBingo();
         }
-
+        else
+        {
+            LoseLife();
+        }
+        
         CurrentNumber = GetRandomNumber();
     }
 
     public void RejectCurrentNumber()
     {
+        if (NumberExistsInTicket(CurrentNumber))
+        {
+            LoseLife();
+        }
+        
         CurrentNumber = GetRandomNumber();
     }
 
@@ -142,5 +153,10 @@ public class Game
                 HasBingo = true;
             }
         }
+    }
+    
+    private void LoseLife()
+    {
+        Lives--;
     }
 }

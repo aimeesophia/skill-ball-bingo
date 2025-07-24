@@ -46,6 +46,11 @@
     {
         <h1>Bingo!</h1>
     }
+    
+    @for (int i = 0; i < _game.Lives; i++)
+    {
+        <h1>O</h1>
+    }
 }
 
 @if (_game is null)
