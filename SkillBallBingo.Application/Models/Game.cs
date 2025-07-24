@@ -5,6 +5,8 @@ namespace SkillBallBingo.Application.Models;
 public class Game
 {
     public Cell?[][] Ticket { get; }
+    
+    public bool HasBingo { get; private set; }
 
     public int CurrentNumber { get; private set; }
     
@@ -29,6 +31,8 @@ public class Game
                 .Single(cell => cell?.Number == CurrentNumber);
             
             foundCell!.IsMarked = true;
+            
+            CheckForBingo();
         }
 
         CurrentNumber = GetRandomNumber();
@@ -126,5 +130,17 @@ public class Game
         return Ticket.SelectMany(row => row)
             .Where(cell => cell != null)
             .Any(cell => cell.Number == number);
+    }
+
+    private void CheckForBingo()
+    {
+        foreach (var row in Ticket)
+        {
+            var numberedCells = row.Where(cell => cell != null);
+            if (numberedCells.All(cell => cell!.IsMarked))
+            {
+                HasBingo = true;
+            }
+        }
     }
 }

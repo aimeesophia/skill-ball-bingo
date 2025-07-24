@@ -41,6 +41,11 @@
 
     <CountdownTimer @ref="_timer" Seconds="60" OnCountdownFinished="HandleFinished"/>
     <p>@_message</p>
+    
+    @if (_game.HasBingo)
+    {
+        <h1>Bingo!</h1>
+    }
 }
 
 @if (_game is null)
