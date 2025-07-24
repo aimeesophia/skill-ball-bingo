@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using SkillBallBingo.Application.Enums
 @using SkillBallBingo.Application.Models
 @rendermode InteractiveServer
 @inject IJSRuntime JS
@@ -41,12 +42,58 @@
             <button type="button" class="btn btn-danger" @onclick="_game.RejectCurrentNumber">Reject</button>
         </div>
         
-        <CountdownTimer @ref="_timer" Seconds="60" OnCountdownFinished="HandleFinished"/>
+        <CountdownTimer @ref="_timer" Seconds="10" OnCountdownFinished="HandleFinished"/>
         
         @for (int i = 0; i < _game.Lives; i++)
         {
             <h1>O</h1>
         }
+    }
+    
+    @if (_game.IsOver)
+    {
+        <div class="modal show" tabindex="-1" style="display: block;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            @switch (_game.Result)
+                            {
+                                case Result.Win:
+                                    @("You Win!")
+                                    break;
+                                case Result.Lose:
+                                    @("Game Over")
+                                    break;
+                                default:
+                                    @("Game Status")
+                                    break;
+                            }
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            @switch (_game.Result)
+                            {
+                                case Result.Win:
+                                    @("Congratulations! You've completed the game successfully!")
+                                    break;
+                                case Result.Lose:
+                                    @("You lost the game! Better luck next time.")
+                                    break;
+                                default:
+                                    @("Game has ended.")
+                                    break;
+                            }
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" @onclick="StartNewGame">Play Again</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-backdrop show"></div>
     }
     
     @if (_game.HasBingo)
@@ -74,6 +121,7 @@
     private void HandleFinished()
     {
         _game!.IsOver = true;
+        _game!.Result = Result.Lose;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -111,5 +159,11 @@
         
         StateHasChanged();
         return Task.CompletedTask;
+    }
+
+    private void StartNewGame()
+    {
+        _game = new Game();
+        _startTimer = true;
     }
 }

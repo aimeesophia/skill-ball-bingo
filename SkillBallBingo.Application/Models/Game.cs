@@ -1,4 +1,5 @@
-﻿using SkillBallBingo.Console;
+﻿using SkillBallBingo.Application.Enums;
+using SkillBallBingo.Console;
 
 namespace SkillBallBingo.Application.Models;
 
@@ -13,6 +14,8 @@ public class Game
     public int Lives { get; private set; } = 3;
     
     public bool IsOver { get; set; }
+    
+    public Result? Result { get; set; }
     
     private Random Random { get; }
 
@@ -154,6 +157,7 @@ public class Game
             {
                 HasBingo = true;
                 IsOver = true;
+                Result = Enums.Result.Win;
             }
         }
     }
@@ -165,6 +169,7 @@ public class Game
         if (Lives == 0)
         {
             IsOver = true;
+            Result = Enums.Result.Lose;
         }
     }
 }
