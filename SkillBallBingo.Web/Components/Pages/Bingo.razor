@@ -42,7 +42,7 @@
             <button type="button" class="btn btn-danger" @onclick="_game.RejectCurrentNumber">Reject</button>
         </div>
         
-        <CountdownTimer @ref="_timer" Seconds="10" OnCountdownFinished="HandleFinished"/>
+        <CountdownTimer @ref="_timer" Seconds="60" OnCountdownFinished="HandleFinished"/>
         
         @for (int i = 0; i < _game.Lives; i++)
         {
