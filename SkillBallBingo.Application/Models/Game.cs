@@ -48,11 +48,12 @@ public class Game
             
             foundCell!.IsMarked = true;
             
+            AddTime();
             CheckForBingo();
         }
         else
         {
-            // Remove time
+            RemoveTime();
         }
         
         CurrentNumber = GetRandomNumber();
@@ -62,7 +63,7 @@ public class Game
     {
         if (NumberExistsInTicket(CurrentNumber))
         {
-            // Remove time
+            RemoveTime();
         }
         
         CurrentNumber = GetRandomNumber();
@@ -169,5 +170,15 @@ public class Game
                 Result = Enums.Result.Win;
             }
         }
+    }
+
+    private void AddTime()
+    {
+        Timer.RemainingSeconds += 5;
+    }
+
+    private void RemoveTime()
+    {
+        Timer.RemainingSeconds -= 5;
     }
 }

@@ -8,7 +8,7 @@ public class CountdownTimer
     
     public event Action? OnTimeUp;
 
-    private int RemainingSeconds { get; set; } = 10;
+    public int RemainingSeconds { get; set; } = 60;
     
     private Timer? _timer;
 
