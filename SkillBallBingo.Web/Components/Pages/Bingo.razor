@@ -6,36 +6,43 @@
 
 <PageTitle>Skill Ball Bingo</PageTitle>
 
+<div class="game-title">SKILL BALL</div>
+<div class="game-subtitle">BINGO</div>
+
 @if (_game is not null)
 {
-    <table class="table table-bordered w-50">
-        @foreach (var row in _game.Ticket)
-        {
-            <tr>
-                @foreach (var cell in row)
-                {
-                    if (cell is { IsMarked: true })
-                    {
-                        <td class="bg-success-subtle">
-                            @cell.Number
-                        </td>
-                    }
-                    else
-                    {
-                        <td>
-                            @cell?.Number
-                        </td>
-                    }
-                }
-            </tr>
-        }
-    </table>
-
     @if (!_game.IsOver)
     {
-        <br/>
-            @_game.CurrentNumber
-        <br/>
+        <div class="bingo-ball-outer">
+            <div class="bingo-ball-inner">@_game.CurrentNumber</div>
+        </div>
+        
+        <table class="bingo-card">
+            @foreach (var row in _game.Ticket)
+            {
+                <tr>
+                    @foreach (var cell in row)
+                    {
+                        switch (cell)
+                        {
+                            case null:
+                                <td class="cell empty"></td>
+                                break;
+                            case { IsMarked: true }:
+                                <td class="cell highlight">
+                                    @cell.Number
+                                </td>
+                                break;
+                            default:
+                                <td class="cell">
+                                    @cell.Number
+                                </td>
+                                break;
+                        }
+                    }
+                </tr>
+            }
+        </table>
         
         <div class="btn-group" role="group">
             <button type="button" class="btn btn-success" @onclick="_game.AcceptCurrentNumber">Accept</button>
@@ -43,7 +50,7 @@
         </div>
         
         <br/>
-            @_game.Timer.DisplayTime
+        @_game.Timer.DisplayTime
         <br/>
     }
     
