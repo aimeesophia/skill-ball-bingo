@@ -6,7 +6,9 @@ public class CountdownTimer
     
     public event Action? OnTick;
     
-    public int RemainingSeconds { get; set; } = 60;
+    public event Action? OnTimeUp;
+
+    private int RemainingSeconds { get; set; } = 10;
     
     private Timer? _timer;
 
@@ -21,6 +23,7 @@ public class CountdownTimer
             }
             else
             {
+                OnTimeUp?.Invoke();
                 Stop();
             }
         }, null, 0, 1000);

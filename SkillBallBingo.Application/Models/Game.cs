@@ -11,8 +11,6 @@ public class Game
 
     public int CurrentNumber { get; private set; }
     
-    public int Lives { get; private set; } = 3;
-    
     public bool IsOver { get; set; }
     
     public CountdownTimer Timer { get; }
@@ -31,8 +29,15 @@ public class Game
         CurrentNumber = GetRandomNumber();
         Timer = new CountdownTimer();
         Timer.Start();
+        Timer.OnTimeUp += HandleTimeUp;
     }
-    
+
+    private void HandleTimeUp()
+    {
+        IsOver = true;
+        Result = Enums.Result.Lose;
+    }
+
     public void AcceptCurrentNumber()
     {
         if (NumberExistsInTicket(CurrentNumber))
@@ -47,7 +52,7 @@ public class Game
         }
         else
         {
-            LoseLife();
+            // Remove time
         }
         
         CurrentNumber = GetRandomNumber();
@@ -57,7 +62,7 @@ public class Game
     {
         if (NumberExistsInTicket(CurrentNumber))
         {
-            LoseLife();
+            // Remove time
         }
         
         CurrentNumber = GetRandomNumber();
@@ -163,17 +168,6 @@ public class Game
                 IsOver = true;
                 Result = Enums.Result.Win;
             }
-        }
-    }
-    
-    private void LoseLife()
-    {
-        Lives--;
-        
-        if (Lives == 0)
-        {
-            IsOver = true;
-            Result = Enums.Result.Lose;
         }
     }
 }
