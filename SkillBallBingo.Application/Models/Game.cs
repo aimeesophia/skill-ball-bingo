@@ -15,6 +15,8 @@ public class Game
     
     public bool IsOver { get; set; }
     
+    public CountdownTimer Timer { get; }
+    
     public Result? Result { get; set; }
     
     private Random Random { get; }
@@ -27,6 +29,8 @@ public class Game
         AvailableNumbers = Enumerable.Range(1, 90).ToList();
         Ticket = GenerateTicket();
         CurrentNumber = GetRandomNumber();
+        Timer = new CountdownTimer();
+        Timer.Start();
     }
     
     public void AcceptCurrentNumber()

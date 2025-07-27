@@ -41,9 +41,9 @@
             <button type="button" class="btn btn-success" @onclick="_game.AcceptCurrentNumber">Accept</button>
             <button type="button" class="btn btn-danger" @onclick="_game.RejectCurrentNumber">Reject</button>
         </div>
-        
-        <CountdownTimer @ref="_timer" Seconds="60" OnCountdownFinished="HandleFinished"/>
-        
+        <br/>
+        @_game.Timer.DisplayTime
+        <br/>
         @for (int i = 0; i < _game.Lives; i++)
         {
             <h1>O</h1>
@@ -88,7 +88,7 @@
                         </p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-success" @onclick="StartNewGame">Play Again</button>
+                        <button type="button" class="btn btn-success" @onclick="StartGame">Play Again</button>
                     </div>
                 </div>
             </div>
@@ -109,29 +109,20 @@
 
 @code {
     private Game? _game;
-    private CountdownTimer? _timer;
-    private bool _startTimer;
 
     private void StartGame()
     {
         _game = new Game();
-        _startTimer = true;
+        _game.Timer.OnTick += TimerTick;
     }
 
-    private void HandleFinished()
+    private void TimerTick()
     {
-        _game!.IsOver = true;
-        _game!.Result = Result.Lose;
+        InvokeAsync(StateHasChanged);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (_startTimer && _timer != null)
-        {
-            _timer.Start();
-            _startTimer = false;
-        }
-
         if (firstRender)
         {
             await Js.InvokeVoidAsync("keyboardInterop.initialize",
@@ -159,11 +150,5 @@
         
         StateHasChanged();
         return Task.CompletedTask;
-    }
-
-    private void StartNewGame()
-    {
-        _game = new Game();
-        _startTimer = true;
     }
 }
