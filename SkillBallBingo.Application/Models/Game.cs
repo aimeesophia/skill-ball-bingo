@@ -11,11 +11,13 @@ public class Game
 
     public int CurrentNumber { get; private set; }
     
-    public bool IsOver { get; set; }
+    public bool IsOver { get; private set; }
     
     public CountdownTimer Timer { get; }
     
-    public Result? Result { get; set; }
+    public Result? Result { get; private set; }
+    
+    public List<int> CalledNumbers { get; private set; }
     
     private Random Random { get; }
 
@@ -25,6 +27,7 @@ public class Game
     {
         Random = new Random();
         AvailableNumbers = Enumerable.Range(1, 90).ToList();
+        CalledNumbers = new List<int>();
         Ticket = GenerateTicket();
         CurrentNumber = GetRandomNumber();
         Timer = new CountdownTimer();
@@ -56,6 +59,7 @@ public class Game
             RemoveTime();
         }
         
+        CalledNumbers.Add(CurrentNumber);
         CurrentNumber = GetRandomNumber();
     }
 
@@ -66,6 +70,7 @@ public class Game
             RemoveTime();
         }
         
+        CalledNumbers.Add(CurrentNumber);
         CurrentNumber = GetRandomNumber();
     }
 
@@ -144,6 +149,13 @@ public class Game
     
     private int GetRandomNumber()
     {
+        if (AvailableNumbers.Count == 0)
+        {
+            IsOver = true;
+            Result = Enums.Result.Lose;
+            return 0;
+        }
+        
         var randomIndex = Random.Next(0, AvailableNumbers.Count);
         var selectedNumber = AvailableNumbers[randomIndex];
         AvailableNumbers.Remove(selectedNumber);

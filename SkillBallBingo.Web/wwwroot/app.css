@@ -1,26 +1,40 @@
+:root {
+    --red: #e74c3c;
+    --yellow: #f1c40f;
+    --blue: #3498db;
+    --green: #2ecc71;
+    --purple: #9b59b6;
+    --orange: #e67e22;
+}
+
 body {
     background: linear-gradient(to bottom, #87CEFA, #00BFFF) no-repeat;
     background-size: cover;
     min-height: 100vh;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Baloo 2', cursive;
     color: #333;
     text-align: center;
     padding: 2rem 1rem;
 }
 
 .game-title {
-    font-size: 3rem;
-    font-weight: 900;
-    color: #ffcc00;
-    -webkit-text-stroke: 2px black;
+    font-size: 5rem;
 }
 
 .game-subtitle {
-    font-size: 2.5rem;
-    font-weight: 900;
-    color: #e94e1b;
-    -webkit-text-stroke: 2px black;
-    margin-bottom: 1.5rem;
+    font-size: 4.5rem;
+    margin-bottom: 2rem;
+    margin-top: -1.5rem;
+}
+
+.honk-font {
+   font-family: "Honk", system-ui;
+   font-optical-sizing: auto;
+   font-weight: 400;
+   font-style: normal;
+   font-variation-settings:
+           "MORF" 15,
+           "SHLN" 0;
 }
 
 .bingo-ball-outer {
@@ -28,18 +42,18 @@ body {
     height: 100px;
     border-radius: 50%;
     background: conic-gradient(#2ecc71 0 25%, #f1c40f 25% 75%, #e74c3c 75% 100%);
-    margin: 1rem auto;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 5px solid white;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .bingo-ball-inner {
     width: 60px;
     height: 60px;
     background-color: white;
-    color: #333;
+    color: black;
     font-size: 1.5rem;
     font-weight: bold;
     border-radius: 50%;
@@ -49,6 +63,32 @@ body {
     box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
 }
 
+.game-timer-box {
+    width: 140px;
+    height: 100px;
+    border-radius: 12px;
+    background: #f1c40f;
+    border: 5px solid white;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.timer-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.timer-text {
+    font-size: 1.4rem;
+    line-height: 1;
+    margin-top: 2px;
+}
 
 .new-game-btn {
     font-size: 1.25rem;
@@ -104,6 +144,11 @@ table.bingo-card {
     line-height: 40px;
     color: white;
     text-align: center;
+    border: 2px solid #000; /* <- Add this for a black outline */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* optional for depth */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .bg-red { background-color: #e74c3c; }

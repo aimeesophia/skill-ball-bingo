@@ -6,16 +6,29 @@
 
 <PageTitle>Skill Ball Bingo</PageTitle>
 
-<div class="game-title">SKILL BALL</div>
-<div class="game-subtitle">BINGO</div>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Honk:SHLN@0&display=swap" rel="stylesheet">
+
+<div class="game-title honk-font">SKILL BALL</div>
+<div class="game-subtitle honk-font">BINGO</div>
 
 @if (_game is not null)
 {
     @if (!_game.IsOver)
     {
-        <div class="bingo-ball-outer">
-            <div class="bingo-ball-inner">@_game.CurrentNumber</div>
+        <div class="d-flex justify-content-center align-items-center gap-4 mb-4">
+            <!-- Bingo Ball -->
+            <div class="bingo-ball-outer">
+                <div class="bingo-ball-inner">@_game.CurrentNumber</div>
+            </div>
+
+            <!-- Timer Box -->
+            <div class="game-timer-box">
+                <div class="timer-icon">⏱</div> <div class="timer-text">@_game.Timer.DisplayTime</div>
+            </div>
         </div>
+
         
         <table class="bingo-card">
             @foreach (var row in _game.Ticket)
@@ -44,14 +57,15 @@
             }
         </table>
         
-        <div class="btn-group" role="group">
-            <button type="button" class="btn btn-success" @onclick="_game.AcceptCurrentNumber">Accept</button>
-            <button type="button" class="btn btn-danger" @onclick="_game.RejectCurrentNumber">Reject</button>
+        <div class="ball-tray">
+            @foreach (var number in _game.CalledNumbers)
+            {
+                var backgroundColour = GetBallBackgroundColour(number);
+                var highlightColour = GetBallHighlightColour(number);
+                
+                <div class="tray-ball" style="background: radial-gradient(circle at 30% 30%, @highlightColour, @backgroundColour);">@number</div>
+            }
         </div>
-        
-        <br/>
-        @_game.Timer.DisplayTime
-        <br/>
     }
     
     @if (_game.IsOver)
@@ -160,5 +174,55 @@
         
         StateHasChanged();
         return Task.CompletedTask;
+    }
+
+    private string GetBallBackgroundColour(int number)
+    {
+        switch (number)
+        {
+            case <= 9:
+                return "#e6194B"; // Red
+            case <= 19:
+                return "#f58231"; // Orange
+            case <= 29:
+                return "#ffe119"; // Yellow
+            case <= 39:
+                return "#bfef45"; // Lime
+            case <= 49:
+                return "#3cb44b"; // Green
+            case <= 59:
+                return "#42d4f4"; // Teal
+            case <= 69:
+                return "#4363d8"; // Blue
+            case <= 79:
+                return "#911eb4"; // Purple
+            default:
+                return "#f032e6"; // Pink
+        }
+    }
+
+    private string GetBallHighlightColour(int number)
+    {
+        switch (number)
+        {
+            case <= 9:
+                return "#FC9597"; // Red
+            case <= 19:
+                return "#FFBB8E"; // Orange
+            case <= 29:
+                return "#FFEE93"; // Yellow
+            case <= 39:
+                return "#E0F7A0"; // Lime
+            case <= 49:
+                return "#9ED79C"; // Green
+            case <= 59:
+                return "#AAE8F9"; // Teal
+            case <= 69:
+                return "#A2A6EB"; // Blue
+            case <= 79:
+                return "#C78BD7"; // Purple
+            default:
+                return "#FD9FF3"; // Pink
+        }
     }
 }
