@@ -8,9 +8,9 @@ public class CountdownTimer
     
     public event Action? OnTimeUp;
 
-    public event Action? TimeAdded;
+    public event Action? OnTimeAdded;
     
-    public event Action? TimeRemoved;
+    public event Action? OnTimeRemoved;
 
     public int RemainingSeconds { get; set; } = 60;
     
@@ -36,13 +36,13 @@ public class CountdownTimer
     public void AddTime()
     {
         RemainingSeconds += 5;
-        TimeAdded?.Invoke();
+        OnTimeAdded?.Invoke();
     }
 
     public void RemoveTime()
     {
         RemainingSeconds -= 5;
-        TimeRemoved?.Invoke();
+        OnTimeRemoved?.Invoke();
     }
 
     private void Stop()

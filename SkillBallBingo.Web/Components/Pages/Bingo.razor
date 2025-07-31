@@ -128,8 +128,8 @@
         _game = new Game();
         _game.Timer.OnTick += TimerTick;
         _game.Timer.OnTimeUp += HandleOnTimeUp;
-        _game.Timer.TimeAdded += HandleTimeAdded;
-        _game.Timer.TimeRemoved += HandleTimeRemoved;
+        _game.Timer.OnTimeAdded += HandleOnTimeAdded;
+        _game.Timer.OnTimeRemoved += HandleOnTimeRemoved;
     }
 
     private void HandleOnTimeUp()
@@ -142,7 +142,7 @@
         await InvokeAsync(StateHasChanged);
     }
 
-    private async void HandleTimeAdded()
+    private async void HandleOnTimeAdded()
     {
         _timeAdded = true;
         await InvokeAsync(StateHasChanged);
@@ -151,7 +151,7 @@
         await InvokeAsync(StateHasChanged);
     }
     
-    private async void HandleTimeRemoved()
+    private async void HandleOnTimeRemoved()
     {
         _timeRemoved = true;
         await InvokeAsync(StateHasChanged);
