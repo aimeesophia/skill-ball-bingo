@@ -143,19 +143,36 @@ table.bingo-card {
     justify-content: center;
 }
 
-@keyframes timeChange {
+@keyframes timeAdded {
     0% {
         transform: scale(1);
     }
     50% {
         transform: scale(1.2);
-        color: #ff6b6b;
+        color: #3CB44B;
     }
     100% {
         transform: scale(1);
     }
 }
 
-.timer-text.time-changed {
-    animation: timeChange 0.5s ease-in-out;
+.timer-text.time-added {
+    animation: timeAdded 0.5s ease-in-out;
+}
+
+@keyframes timeRemoved {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+        color: #E6194B;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.timer-text.time-removed {
+    animation: timeRemoved 0.5s ease-in-out;
 }

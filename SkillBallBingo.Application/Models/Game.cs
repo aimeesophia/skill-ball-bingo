@@ -14,8 +14,8 @@ public class Game
     public CountdownTimer Timer { get; }
     
     public Result? Result { get; private set; }
-    
-    public List<int> CalledNumbers { get; private set; }
+
+    public List<int> CalledNumbers { get; }
     
     private Random Random { get; }
 
@@ -25,7 +25,7 @@ public class Game
     {
         Random = new Random();
         AvailableNumbers = Enumerable.Range(1, 90).ToList();
-        CalledNumbers = new List<int>();
+        CalledNumbers = [];
         Ticket = GenerateTicket();
         CurrentNumber = GetRandomNumber();
         Timer = new CountdownTimer();
@@ -49,12 +49,12 @@ public class Game
             
             foundCell!.IsMarked = true;
             
-            AddTime();
+            Timer.AddTime();
             CheckForBingo();
         }
         else
         {
-            RemoveTime();
+            Timer.RemoveTime();
         }
         
         CalledNumbers.Add(CurrentNumber);
@@ -65,7 +65,7 @@ public class Game
     {
         if (NumberExistsInTicket(CurrentNumber))
         {
-            RemoveTime();
+            Timer.RemoveTime();
         }
         
         CalledNumbers.Add(CurrentNumber);
@@ -179,15 +179,5 @@ public class Game
                 Result = Enums.Result.Win;
             }
         }
-    }
-
-    private void AddTime()
-    {
-        Timer.RemainingSeconds += 5;
-    }
-
-    private void RemoveTime()
-    {
-        Timer.RemainingSeconds -= 5;
     }
 }
