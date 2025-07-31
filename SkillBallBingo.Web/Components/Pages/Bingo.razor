@@ -23,11 +23,11 @@
             </div>
 
             <div class="game-timer-box">
-                <div class="timer-icon">⏱</div> <div class="timer-text">@_game.Timer.DisplayTime</div>
+                <div class="timer-icon">⏱</div> 
+                <div class="timer-text @(_timeChanged ? "time-changed" : "")">@_game.Timer.DisplayTime</div>
             </div>
         </div>
 
-        
         <table class="bingo-card">
             @foreach (var row in _game.Ticket)
             {
@@ -110,11 +110,6 @@
         </div>
         <div class="modal-backdrop show"></div>
     }
-    
-    @if (_game.HasBingo)
-    {
-        <h1>Bingo!</h1>
-    }
 }
 
 @if (_game is null)
@@ -123,6 +118,8 @@
 }
 
 @code {
+    private bool _timeChanged;
+    
     private Game? _game;
 
     private void StartGame()
@@ -137,9 +134,13 @@
         InvokeAsync(StateHasChanged);
     }
 
-    private void TimerTick()
+    private async void TimerTick()
     {
-        InvokeAsync(StateHasChanged);
+        _timeChanged = true;
+        await InvokeAsync(StateHasChanged);
+        await Task.Delay(500);
+        _timeChanged = false;
+        await InvokeAsync(StateHasChanged);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

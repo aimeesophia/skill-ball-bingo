@@ -7,8 +7,6 @@ public class Game
 {
     public Cell?[][] Ticket { get; }
     
-    public bool HasBingo { get; private set; }
-
     public int CurrentNumber { get; private set; }
     
     public bool IsOver { get; private set; }
@@ -177,7 +175,6 @@ public class Game
             var numberedCells = row.Where(cell => cell != null);
             if (numberedCells.All(cell => cell!.IsMarked))
             {
-                HasBingo = true;
                 IsOver = true;
                 Result = Enums.Result.Win;
             }
