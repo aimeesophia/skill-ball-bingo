@@ -24,7 +24,7 @@
 
             <div class="game-timer-box">
                 <div class="timer-icon">⏱</div> 
-                <div class="timer-text @(_timeAdded ? "time-added" : "") @(_timeRemoved ? "time-removed" : "")">@_game.Timer.DisplayTime</div>
+                <div class="timer-text @(_timeAdded ? "time-added" : "") @(_timeRemoved ? "time-removed" : "") @(_lastSeconds ? "last-seconds" : "")">@_game.Timer.DisplayTime</div>
             </div>
         </div>
 
@@ -120,6 +120,7 @@
 @code {
     private bool _timeAdded;
     private bool _timeRemoved;
+    private bool _lastSeconds;
     
     private Game? _game;
 
@@ -130,6 +131,16 @@
         _game.Timer.OnTimeUp += HandleOnTimeUp;
         _game.Timer.OnTimeAdded += HandleOnTimeAdded;
         _game.Timer.OnTimeRemoved += HandleOnTimeRemoved;
+        _game.Timer.OnLastSeconds += HandleOnLastSeconds;
+    }
+
+    private async void HandleOnLastSeconds()
+    {
+        _lastSeconds = true;
+        await InvokeAsync(StateHasChanged);
+        await Task.Delay(500);
+        _lastSeconds = false;
+        await InvokeAsync(StateHasChanged);
     }
 
     private void HandleOnTimeUp()
@@ -137,9 +148,9 @@
         InvokeAsync(StateHasChanged);
     }
 
-    private async void TimerTick()
+    private void TimerTick()
     {
-        await InvokeAsync(StateHasChanged);
+        InvokeAsync(StateHasChanged);
     }
 
     private async void HandleOnTimeAdded()

@@ -11,8 +11,12 @@ public class CountdownTimer
     public event Action? OnTimeAdded;
     
     public event Action? OnTimeRemoved;
+    
+    public event Action? OnLastSeconds;
 
-    public int RemainingSeconds { get; set; } = 60;
+    private int RemainingSeconds { get; set; } = 60;
+
+    public int LastSeconds { get; set; } = 10;
     
     private Timer? _timer;
 
@@ -22,8 +26,14 @@ public class CountdownTimer
         {
             if (RemainingSeconds > 0)
             {
-                RemainingSeconds--;
                 OnTick?.Invoke();
+
+                if (RemainingSeconds < LastSeconds)
+                {
+                    OnLastSeconds?.Invoke();
+                }
+                
+                RemainingSeconds--;
             }
             else
             {

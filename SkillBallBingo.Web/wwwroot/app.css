@@ -176,3 +176,20 @@ table.bingo-card {
 .timer-text.time-removed {
     animation: timeRemoved 0.5s ease-in-out;
 }
+
+@keyframes lastSeconds {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+        color: #E6194B;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.timer-text.last-seconds {
+    animation: lastSeconds 0.5s ease-in-out;
+}
